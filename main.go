@@ -5,17 +5,23 @@ import (
 	"net/http"
 )
 
-func main() {
+func Home(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "This is the home page")
+}
 
-	//First approach to create a http handler
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		n, err := fmt.Fprintf(w, "Hello World! Hey Mahin!")
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Printf("Bytes written: %d\n", n)
-	})
+func About(w http.ResponseWriter, r *http.Request) {
+	sum := AddValues(2, 5)
+
+	fmt.Fprintf(w, fmt.Sprintf("This is the about page and 2+2=%d", sum))
+}
+
+func AddValues(x, y int) int {
+	return x + y
+}
+
+func main() {
+	http.HandleFunc("/", Home)
+	http.HandleFunc("/about", About)
 
 	_ = http.ListenAndServe(":8000", nil)
-
 }
